@@ -1,9 +1,7 @@
 rm(list = ls()) ### clear all variables
 
-rm(list = ls())
 projectpath <- "/Users/songkim/GoogleDrive/Primary/Projects/Spendl/Results"
 setwd(projectpath)
-
 
 library(grid)
 library(gridExtra)
@@ -13,7 +11,7 @@ library(magick)
 ### functions
 make_annot <- function(file) {
   tokens <- strsplit(file, "_")
-  if (length(tokens[[1]]) != 6){
+  if (length(tokens[[1]]) < 6 || length(tokens[[1]]) > 7){
     stop('check file name.')
   }
   label <- paste(as.numeric(tokens[[1]][4])*1000, '-', as.numeric(tokens[[1]][5])*1000, "ms", sep="")
@@ -33,7 +31,7 @@ make_gridplot <- function(freq, contrast, view, draw=draw) {
   if (draw==TRUE){
     grid.arrange(rasterGrob(annotated_list[[1]]), rasterGrob(annotated_list[[2]]), rasterGrob(annotated_list[[3]]), rasterGrob(annotated_list[[4]]), rasterGrob(annotated_list[[5]]), rasterGrob(annotated_list[[6]]), rasterGrob(annotated_list[[7]]), rasterGrob(annotated_list[[8]]), ncol=4, nrow=2)
   }
-  outname <- paste0(freq, "_", contrast, "_", view, ".png")
+  outname <- paste0("Grid_", freq, "_", contrast, "_", view, ".png")
   ggsave(file=outname, plot, width = 20, height = 10)
   print(paste("Plot is saved as", outname))
   return (plot)
@@ -50,17 +48,22 @@ idx <- as.integer(idx)
 contrast <- d[idx]
 
 views <- c("left", "right", "bottom", "top", "left_intern", "right_intern")
-df <- data.frame("views"=views)
-print(df)
-vw <- readline(prompt="Choose the view:")
-vw <- df[vw, ]
-print(paste(contrast, "for", vw, "view is chosen."))
+# df <- data.frame("views"=views)
+# print(df)
+# vw <- readline(prompt="Choose the view:")
+# vw <- df[vw, ]
+# print(paste(contrast, "for", vw, "view is chosen."))
 
 
 #execute
 
 draw <- as.numeric(readline(prompt="Display plot? (0 for No, 1 for Yes):"))
-make_gridplot(freq, contrast, vw, draw)
+# make_gridplot(freq, contrast, vw, draw)
+
+for (v in views){
+  make_gridplot(freq, contrast, v, draw)
+}
+
 
 print('End of Script=================================')
 
