@@ -47,7 +47,7 @@ idx <- readline(prompt="Choose the contrast:")
 idx <- as.integer(idx)
 contrast <- d[idx]
 
-views <- c("left", "right", "bottom", "top", "left_intern", "right_intern")
+views <- c("left", "right", "bottom", "top", "front", "left_intern", "right_intern")
 # df <- data.frame("views"=views)
 # print(df)
 # vw <- readline(prompt="Choose the view:")
